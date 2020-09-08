@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.Cell;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +40,7 @@ public class Board {
                 cells.get(index).setStatus(status);
             }
         }
+
     }
 
     public List<Cell> getCells() {
