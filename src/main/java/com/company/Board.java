@@ -8,7 +8,8 @@ public class Board {
     // Manages all Game Board related stuff
 
     private List<Cell> cells = null;
-    private int boardSize;
+    private int boardWidth;
+    private int boardHeight;
 
     private Board(){}
 
@@ -20,12 +21,13 @@ public class Board {
         return SingletonHandler.instance;
     }
 
-    public void initBoardParameters(int boardSize){
+    public void initBoardParameters(int boardWidth, int boardHeight){
         // Init Board
         cells = new ArrayList<>();
-        this.boardSize = boardSize;
-        for (int i=0;i<this.boardSize;i++){
-            for (int j=0;j<this.boardSize;j++){
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        for (int i=0;i<this.boardHeight;i++){
+            for (int j=0;j<this.boardWidth;j++){
                 cells.add(new Cell(i,j));
             }
         }
@@ -33,9 +35,9 @@ public class Board {
 
     public void seed(boolean[][] pattern){
         // Seeds the input pattern
-        for (int i=0;i<this.boardSize;i++){
-            for (int j=0;j<this.boardSize;j++){
-                int index = boardSize*i + j;
+        for (int i=0;i<this.boardHeight;i++){
+            for (int j=0;j<this.boardWidth;j++){
+                int index = this.boardWidth*i + j;
                 boolean status = pattern[i][j];
                 cells.get(index).setStatus(status);
             }
@@ -47,8 +49,12 @@ public class Board {
         return cells;
     }
 
-    public int getBoardSize() {
-        return boardSize;
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
     }
 
     public void setBoardState(List<Cell> cells) {
@@ -57,9 +63,9 @@ public class Board {
 
     public void display(){
         System.out.println("");
-        for (int i=0;i<boardSize;i++){
-            for (int j=0;j<boardSize;j++){
-                int index = boardSize*i + j;
+        for (int i=0;i<boardHeight;i++){
+            for (int j=0;j<boardWidth;j++){
+                int index = boardWidth*i + j;
                 if (cells.get(index).isAlive()){
                     System.out.print(1);
                 }

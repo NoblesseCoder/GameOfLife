@@ -1,23 +1,22 @@
 import com.company.Board;
 import com.company.GameRules;
+import com.company.gui.MainFrame;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
+
         Board board = Board.getInstance();
-        int boardSize = 4;
-        board.initBoardParameters(boardSize);
-        boolean[][] pattern = new boolean[][]{{false,false,false,false},
-                {false,true,true,false},
-                {false,true,true,false},
-                {false,false,false,false}};
-        board.seed(pattern);
-        board.display();
+        int boardWidth = 200, boardHeight = 200;
+        board.initBoardParameters(boardWidth, boardHeight);
         GameRules gameRules = new GameRules(board);
 
-        while (true){
-            gameRules.apply();
-            board.display();
-        }
-
+//        board.display();
+//        GameRules gameRules = new GameRules(board);
+//
+//        while (true){
+//            gameRules.apply();
+//            board.display();
+//        }
+        new MainFrame(board,gameRules);
     }
 }

@@ -6,11 +6,13 @@ import java.util.List;
 public class GameRules {
     // Apply Game Rules on a board State
 
-    private final int boardSize;
+    private final int boardWidth;
+    private final int boardHeight;
     List<Cell> cells;
 
     public GameRules(Board board){
-        this.boardSize = board.getBoardSize();
+        this.boardWidth = board.getBoardWidth();
+        this.boardHeight =  board.getBoardHeight();
         this.cells = board.getCells();
     }
 
@@ -37,7 +39,7 @@ public class GameRules {
 
     private boolean isCellPositionValid(int xPos, int yPos){
         return (((xPos>=0) && (yPos>=0)) &&
-                ((xPos <= boardSize-1) && (yPos <= boardSize-1)));
+                ((xPos <= boardHeight-1) && (yPos <= boardWidth-1)));
     }
 
     private List<Cell> getNeighbours(Cell cell){
@@ -55,7 +57,7 @@ public class GameRules {
                 if (!((xPos == cell.getXPos()) && (yPos == cell.getYPos()))) {
                     // Don't include cell itself
                     if (isCellPositionValid(xPos, yPos)) {
-                        int index = boardSize * xPos + yPos; // Row-Major form
+                        int index = boardWidth * xPos + yPos; // Row-Major form
                         neighbours.add(cells.get(index));
                     }
                 }
