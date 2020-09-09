@@ -12,20 +12,21 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class BoardPanel extends JPanel implements ActionListener{
-    private final int F_WIDTH = 900;
-    private final int F_HEIGHT = 700;
     private final int WIDTH;
     private final int HEIGHT;
-    int CELL_SIZE;
+    private final int CELL_WIDTH_SIZE;
+    private final int CELL_HEIGHT_SIZE;
     List<Cell> grid;
     boolean flag = true;
     GameRules gameRules;
 
-    public BoardPanel(Board board, GameRules gameRules){
+    public BoardPanel(Board board, GameRules gameRules, int GUI_WIDTH,
+                      int GUI_HEIGHT){
         WIDTH = board.getBoardWidth();
         HEIGHT = board.getBoardHeight();
         this.gameRules = gameRules;
-        CELL_SIZE = F_WIDTH/WIDTH;
+        CELL_WIDTH_SIZE = GUI_WIDTH /WIDTH;
+        CELL_HEIGHT_SIZE = GUI_HEIGHT /HEIGHT;
         grid = board.getCells();;
         setBackground(Color.DARK_GRAY);
         setLayout(new FlowLayout(FlowLayout.TRAILING));
@@ -42,28 +43,20 @@ public class BoardPanel extends JPanel implements ActionListener{
 
     public void drawBoard(Graphics graphics){
         graphics.setColor(Color.LIGHT_GRAY);
-        for (int i=0;i<F_WIDTH;i++){
-            graphics.drawLine(0,i * CELL_SIZE,
-                    F_WIDTH-1, i * CELL_SIZE); // draw row
-            graphics.drawLine(i * CELL_SIZE,0,
-                    i * CELL_SIZE, F_HEIGHT-1); // draw Col
+        for (int i=0;i<=HEIGHT;i++){
+            graphics.drawLine(0,i * CELL_HEIGHT_SIZE,
+                    WIDTH*CELL_WIDTH_SIZE-1, i * CELL_HEIGHT_SIZE); // draw row
+        }
+        for (int j=0;j<=WIDTH;j++){
+            graphics.drawLine(j * CELL_WIDTH_SIZE,0,
+                    j * CELL_WIDTH_SIZE, HEIGHT*CELL_HEIGHT_SIZE-1); // draw Col
         }
     }
 
     public void seed(){
-//        if (flag){
-//            for (int x=0;x<HEIGHT;x++){
-//                for (int y=0;y<WIDTH;y++){
-//                    if ((int)(Math.random()*5) == 0){
-//                        int index = WIDTH*x + y;
-//                        grid.get(index).setStatus(true);
-//                    }
-//                }
-//            }
-//        }
         if (flag){
-            int x = HEIGHT/2;
-            for (int y=0;y<WIDTH;y++){
+            int y = WIDTH/2;
+            for (int x=0;x<HEIGHT;x++){
                 int index = WIDTH*x + y;
                 grid.get(index).setStatus(true);
             }
@@ -78,8 +71,8 @@ public class BoardPanel extends JPanel implements ActionListener{
                 int index = WIDTH*x + y;
 
                 if (grid.get(index).isAlive()) {
-                    graphics.fillRect(x * CELL_SIZE, y * CELL_SIZE,
-                            CELL_SIZE, CELL_SIZE);
+                    graphics.fillRect(y * CELL_WIDTH_SIZE, x * CELL_HEIGHT_SIZE,
+                            CELL_WIDTH_SIZE, CELL_HEIGHT_SIZE);
                 }
             }
         }
