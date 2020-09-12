@@ -1,20 +1,16 @@
-package com.company;
+package com.company.gol;
 
 public class Cell {
-    // Handles all Cell related stuff
+    // Single (Atomic) unit of the Universe
 
     private final int xPos;
     private final int yPos;
-    private boolean status;
+    private boolean status; // Alive Status (by default Dead (false))
 
-    public Cell(int xPos, int yPos){
+    public Cell(int xPos, int yPos, boolean status){
         this.xPos = xPos;
         this.yPos = yPos;
-        this.status = false; // default cell is dead
-    }
-
-    public boolean isAlive(){
-        return this.status;
+        this.status = status;
     }
 
     public int getXPos() {
@@ -25,7 +21,11 @@ public class Cell {
         return yPos;
     }
 
-    public void setStatus(boolean status) {
+    public boolean isAlive() {
+        return status;
+    }
+
+    public void setAlive(boolean status) {
         this.status = status;
     }
 
