@@ -13,11 +13,19 @@ public class MenuPanel extends JPanel {
     public MenuPanel(BoardPanel boardPanel){
         timer = boardPanel.getTimer();
         setBackground(Color.LIGHT_GRAY);
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new FlowLayout(FlowLayout.LEADING));
 
         JButton playButton = new JButton("Play");
         JButton pauseButton = new JButton("Pause");
         JButton resetButton = new JButton("Reset");
+        JSlider jSlider = new JSlider(JSlider.HORIZONTAL,JSlider.HORIZONTAL, 200, 10);
+        jSlider.setValue(80);
+        Hashtable<Integer, JLabel> labels = new Hashtable<>();
+        labels.put(10, new JLabel("Fast"));
+        labels.put(100, new JLabel("Medium"));
+        labels.put(200, new JLabel("Slow"));
+        jSlider.setLabelTable(labels);
+        jSlider.setPaintLabels(true);
 
         playButton.setEnabled(true);
         pauseButton.setEnabled(false);
@@ -41,12 +49,10 @@ public class MenuPanel extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(boardPanel.getTimer().isRunning()) {
                     boardPanel.getTimer().stop();
-                    boardPanel.getTimer().start();
                     pauseButton.setEnabled(false);
                     playButton.setEnabled(true);
                     resetButton.setEnabled(true);
                 }
-
             }
         });
 
@@ -59,17 +65,11 @@ public class MenuPanel extends JPanel {
                 pauseButton.setEnabled(false);
                 playButton.setEnabled(true);
                 resetButton.setEnabled(false);
+                jSlider.setValue(100);
             }
         });
 
-        JSlider jSlider = new JSlider(JSlider.HORIZONTAL, 0, 200, 10);
-        jSlider.setValue(80);
-        Hashtable<Integer, JLabel> labels = new Hashtable<>();
-        labels.put(10, new JLabel("Fast"));
-        labels.put(100, new JLabel("Medium"));
-        labels.put(200, new JLabel("Slow"));
-        jSlider.setLabelTable(labels);
-        jSlider.setPaintLabels(true);
+
         jSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent ce) {
                 if(boardPanel.getTimer().isRunning()) {

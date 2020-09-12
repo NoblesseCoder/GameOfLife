@@ -1,25 +1,25 @@
 package com.company.gui;
 
+import com.company.Config;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Click implements MouseListener {
 
-    private int mx = -100;
-    private int my = -100;
-
-    public int getMx() {
-        return mx;
-    }
-
-    public int getMy() {
-        return my;
+    private int mX = -100;
+    private int mY = -100;
+    BoardPanel boardPanel;
+    Click(BoardPanel boardPanel){
+        this.boardPanel = boardPanel;
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        mx = mouseEvent.getX();
-        my = mouseEvent.getY();
+        mX = mouseEvent.getX();
+        mY = mouseEvent.getY();
+        boardPanel.seed(mX,mY);
+        boardPanel.paintComponent(boardPanel.getGraphics());
     }
 
     @Override

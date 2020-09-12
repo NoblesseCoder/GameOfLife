@@ -120,7 +120,7 @@ public class Universe {
 
     public void resetCells() {
         for (Cell cell: cells){
-            cell.setAlive(false);
+            cell.setAlive(Config.DEAD);
         }
     }
 

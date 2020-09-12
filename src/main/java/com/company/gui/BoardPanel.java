@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.TimerTask;
 
 public class BoardPanel extends JPanel implements ActionListener{
 
@@ -21,11 +20,10 @@ public class BoardPanel extends JPanel implements ActionListener{
     private final double CELL_HEIGHT_SIZE;
     private final int BOARD_MARGIN = 20;
     List<Cell> grid;
-    boolean flag = true;
     public Timer timer;
-    public boolean seedFlag = true;
     Move move;
     Click click;
+    private boolean flag ;
 
     public BoardPanel(){
         Universe universe = Universe.getInstance();
@@ -41,10 +39,10 @@ public class BoardPanel extends JPanel implements ActionListener{
                 FlowLayout.TRAILING));
         setBackground(Color.DARK_GRAY);
 
-        move = new Move();
+        move = new Move(this);
         addMouseMotionListener(move);
 
-        click = new Click();
+        click = new Click(this);
         addMouseListener(click);
 
         int TIME = 100;
@@ -55,9 +53,6 @@ public class BoardPanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
         drawBoard(graphics);
-        if (seedFlag) {
-            seed();
-        }
         display(graphics);
     }
 
@@ -85,31 +80,6 @@ public class BoardPanel extends JPanel implements ActionListener{
         }
     }
 
-    public void seed(){
-        if (flag){
-            int y = Config.UNIVERSE_WIDTH/2;
-            for (int x=0;x<Config.UNIVERSE_HEIGHT;x++){
-                int index = Config.UNIVERSE_WIDTH*x + y;
-                grid.get(index).setAlive(true);
-            }
-        }
-        flag = false;
-        seedFlag = false;
-    }
-
-    public void manualSeed(){
-        if (flag) {
-            checkCellClick();
-        }
-        flag = false;
-        seedFlag = false;
-    }
-
-
-    public void seedOne(int index){
-        grid.get(index).setAlive(true);
-    }
-
     public void unSeed(){
         Universe.getInstance().resetCells();
     }
@@ -127,7 +97,6 @@ public class BoardPanel extends JPanel implements ActionListener{
                         CELL_WIDTH_SIZE, CELL_HEIGHT_SIZE);
 
                 if(grid.get(index).isAlive()){
-                    seedOne(index);
                     graphics2D.setColor(Color.GREEN);
                     graphics2D.fill(rect);
                 }
@@ -150,28 +119,28 @@ public class BoardPanel extends JPanel implements ActionListener{
         this.timer = timer;
     }
 
-    public boolean isInCell(int x, int y){
-        int index = Config.UNIVERSE_WIDTH*x + y;
-        return ((move.getMx() >= y * CELL_WIDTH_SIZE + BOARD_MARGIN &&
-                move.getMx() <= (y+1) * CELL_WIDTH_SIZE + BOARD_MARGIN)
-                && (move.getMy() >= x * CELL_HEIGHT_SIZE + BOARD_MARGIN &&
-                move.getMy() <= (x+1) * CELL_HEIGHT_SIZE + BOARD_MARGIN)) ||
-                grid.get(index).isAlive();
-    }
-
-    public void checkCellClick() {
+    public void seed(int mX, int mY){
         for (int x = 0; x < Config.UNIVERSE_HEIGHT; x++) {
             for (int y = 0; y < Config.UNIVERSE_WIDTH; y++) {
                 int index = Config.UNIVERSE_WIDTH * x + y;
-                if ((click.getMx() >= y * CELL_WIDTH_SIZE + BOARD_MARGIN &&
-                        click.getMx() <= (y + 1) * CELL_WIDTH_SIZE + BOARD_MARGIN)
-                        && (click.getMy() >= x * CELL_HEIGHT_SIZE + BOARD_MARGIN &&
-                        click.getMy() <= (x + 1) * CELL_HEIGHT_SIZE + BOARD_MARGIN)) {
-                    seedOne(index);
+                if((mX >= y * CELL_WIDTH_SIZE + BOARD_MARGIN &&
+                        mX <= (y+1) * CELL_WIDTH_SIZE + BOARD_MARGIN)
+                        && (mY >= x * CELL_HEIGHT_SIZE + BOARD_MARGIN &&
+                        mY <= (x+1) * CELL_HEIGHT_SIZE + BOARD_MARGIN)){
+                            boolean isAlive = grid.get(index).isAlive();
+                            grid.get(index).setAlive(!isAlive);
                 }
-                ;
             }
         }
+    }
+
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }
 
